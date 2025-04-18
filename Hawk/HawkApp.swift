@@ -13,21 +13,21 @@ struct HawkApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainWindowView()
-                .onAppear {
-                    // Configure the window to be floating and visible on all spaces
-                    if let window = NSApplication.shared.windows.first {
-                        window.level = .floating
-                        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-                        window.isMovableByWindowBackground = true
-                        window.titlebarAppearsTransparent = true
-                        window.standardWindowButton(.zoomButton)?.isHidden = true
-                        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
-                        
-                        // Set a smaller size for the window
-                        window.setContentSize(NSSize(width: 320, height: 240))
-                    }
-                }
+//            MainWindowView()
+//                .onAppear {
+//                    // Configure the window to be floating and visible on all spaces
+//                    if let window = NSApplication.shared.windows.first {
+//                        window.level = .floating
+//                        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+//                        window.isMovableByWindowBackground = true
+//                        window.titlebarAppearsTransparent = true
+//                        window.standardWindowButton(.zoomButton)?.isHidden = true
+//                        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+//                        
+//                        // Set a smaller size for the window
+//                        window.setContentSize(NSSize(width: 320, height: 240))
+//                    }
+//                }
         }
         .windowStyle(HiddenTitleBarWindowStyle())
         .windowResizability(.contentSize)

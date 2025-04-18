@@ -111,6 +111,7 @@ class StatusBarManager {
         
         if results.isEmpty {
             showNotification(title: "No results found", message: "No files found matching '\(searchText)'")
+            showResultsWindow(results: [], searchTerm: searchText)
         } else {
             // Show results window
             showResultsWindow(results: results.map { SearchResult(fileURL: $0) }, searchTerm: searchText)
