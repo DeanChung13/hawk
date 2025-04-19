@@ -76,7 +76,7 @@ class StatusBarManager {
     popover?.behavior = .transient
         
     // Set the SwiftUI view as popover content
-    popover?.contentViewController = NSHostingController(rootView: PopoverContentView())
+    popover?.contentViewController = NSHostingController(rootView: MainWindowView())
   }
     
   @objc func togglePopover(_ sender: NSStatusBarButton) {
@@ -124,6 +124,7 @@ class StatusBarManager {
         rootView: SearchResultsView(results: results)
           .frame(width: 600, height: 400)
       )
+      resultsWindow.makeKeyAndOrderFront(nil)
       return
     }
     // Create window with correct size from the beginning
@@ -170,92 +171,6 @@ class StatusBarManager {
   // Register global hotkey
   func registerHotkey() {
     // Implementation will be added in HotkeyManager.swift
-  }
-}
-
-// MARK: - SwiftUI Views
-
-// 彈出視圖
-struct PopoverContentView: View {
-  @State private var searchDirectory: String = ""
-  @State private var autoSearchEnabled: Bool = true
-    
-  var body: some View {
-    VStack(alignment: .leading, spacing: 15) {
-      Text("Hawk Search")
-        .font(.headline)
-            
-      Divider()
-            
-      Button("Set Search Directory") {
-        showDirectoryPicker()
-      }
-            
-      // Show selected directory if available
-      if !searchDirectory.isEmpty {
-        Text("Selected Directory:")
-          .font(.caption)
-          .foregroundColor(.secondary)
-        Text(searchDirectory)
-          .font(.caption2)
-          .foregroundColor(.secondary)
-          .lineLimit(1)
-      }
-            
-      Divider()
-            
-      // 自動搜尋開關
-      Toggle("Auto Search", isOn: $autoSearchEnabled)
-        .onChange(of: autoSearchEnabled) { _ in
-          StatusBarManager.shared.toggleAutoSearch()
-        }
-            
-      Text("When enabled, Hawk will automatically search when clipboard content changes")
-        .font(.caption)
-        .foregroundColor(.secondary)
-        .fixedSize(horizontal: false, vertical: true)
-            
-      Divider()
-            
-      Button("Search Now") {
-        StatusBarManager.shared.searchWithSelectedText()
-      }
-      .keyboardShortcut("f", modifiers: [.command, .shift])
-            
-      Divider()
-            
-      Text("Keyboard Shortcut: ⌘⇧F")
-        .font(.caption)
-    }
-    .padding()
-    .frame(width: 300)
-    .onAppear {
-      updateDirectoryPath()
-      // 同步自動搜尋狀態
-      autoSearchEnabled = StatusBarManager.shared.getAutoSearchEnabled()
-    }
-  }
-    
-  private func showDirectoryPicker() {
-    let openPanel = NSOpenPanel()
-    openPanel.canChooseDirectories = true
-    openPanel.canChooseFiles = false
-    openPanel.allowsMultipleSelection = false
-        
-    openPanel.begin { response in
-      if response == .OK, let url = openPanel.url {
-        PreferencesManager.shared.saveSearchDirectory(url)
-        updateDirectoryPath()
-      }
-    }
-  }
-    
-  private func updateDirectoryPath() {
-    if let directoryURL = PreferencesManager.shared.getSearchDirectory() {
-      searchDirectory = directoryURL.path
-    } else {
-      searchDirectory = ""
-    }
   }
 }
 
