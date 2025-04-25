@@ -11,10 +11,6 @@ class AccessibilityReader {
   // Singleton instance
   static let shared = AccessibilityReader()
     
-  private var lastErrorTime: Date = .init(timeIntervalSince1970: 0)
-  private let errorThrottleInterval: TimeInterval = 5.0 // 錯誤日誌間隔時間(秒)
-  private var debugMode = true // 設為 true 來啟用詳細日誌
-    
   // 儲存上一次讀取的剪貼簿內容
   private var lastClipboardContent: String = ""
     
@@ -40,15 +36,12 @@ class AccessibilityReader {
     if let timer = clipboardTimer {
       RunLoop.main.add(timer, forMode: .common)
     }
-        
-    debug("開始監控剪貼簿變化")
   }
     
   // 停止監控剪貼簿變化
   func stopMonitoringClipboard() {
     clipboardTimer?.invalidate()
     clipboardTimer = nil
-    debug("停止監控剪貼簿變化")
   }
     
   // 檢查剪貼簿是否有變化
@@ -59,7 +52,6 @@ class AccessibilityReader {
         
     // 如果內容與上次不同且不為空，則發送通知
     if currentContent != lastClipboardContent, !currentContent.isEmpty {
-      debug("剪貼簿內容變更: \"\(currentContent)\"")
       lastClipboardContent = currentContent
             
       // 發送通知，帶上新的剪貼簿內容
@@ -79,37 +71,15 @@ class AccessibilityReader {
     
   // 從剪貼簿獲取文字
   func getSelectedText() -> String? {
-    debug("讀取剪貼簿內容")
-        
     guard let clipboard = NSPasteboard.general.string(forType: .string) else {
-      debug("剪貼簿中沒有文字")
       return nil
     }
         
     if clipboard.isEmpty {
-      debug("剪貼簿內容為空")
       return nil
     }
         
-    debug("剪貼簿內容: \"\(clipboard)\" (長度: \(clipboard.count))")
-        
     // 返回剪貼簿內容
     return clipboard
-  }
-    
-  // 控制錯誤輸出頻率的方法
-  private func printThrottledError(_ message: String) {
-    let currentTime = Date()
-    if currentTime.timeIntervalSince(lastErrorTime) >= errorThrottleInterval {
-      print("Error: \(message)")
-      lastErrorTime = currentTime
-    }
-  }
-    
-  // 調試日誌
-  private func debug(_ message: String) {
-    if debugMode {
-      print("[DEBUG] \(message)")
-    }
   }
 }

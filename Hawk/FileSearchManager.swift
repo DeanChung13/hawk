@@ -29,7 +29,6 @@ class FileSearchManager {
       // Always stop accessing the resource when done
       PreferencesManager.shared.stopAccessingDirectory(directory)
     }
-        
     // Use the find command to search for files
     return searchUsingFindCommand(name: name, in: directory, options: options)
   }
@@ -61,8 +60,22 @@ class FileSearchManager {
     ]
         
     do {
+      // Set up timeout mechanism
+      var processCompleted = false
+      let timeoutWorkItem = DispatchWorkItem {
+        if !processCompleted && process.isRunning {
+          print("Error: Find command timed out after 10 seconds")
+          process.terminate()
+        }
+      }
+      
+      // Schedule timeout after 10 seconds
+      DispatchQueue.global().asyncAfter(deadline: .now() + 10, execute: timeoutWorkItem)
+      
       try process.run()
       process.waitUntilExit()
+      processCompleted = true
+      timeoutWorkItem.cancel() // Cancel the timeout work item since process finished normally
             
       // Read the output
       let data = pipe.fileHandleForReading.readDataToEndOfFile()
