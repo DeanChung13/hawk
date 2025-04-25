@@ -1,91 +1,93 @@
-# Hawk - 快速檔案搜尋工具
+# Hawk - Fast File Search Tool [中文](README_zh.md)
 
-## 🦅 專案簡介
-**Hawk** 是一款 macOS 小工具，讓使用者能夠根據剪貼簿中的文字快速搜尋本地指定資料夾中的檔案。當您在任何應用程式中複製（Command+C）一段文字時，Hawk 可以立即在您指定的資料夾中找到匹配的檔案，並讓您快速開啟它們。
 
----
 
-## ✨ 主要功能
-
-### 📋 剪貼簿監控與自動搜尋
-- **自動搜尋**：當剪貼簿內容變更時自動執行搜尋
-- **手動搜尋**：使用快捷鍵 (⌘⇧F) 或點擊選單欄圖示手動執行搜尋
-- **智能偵測**：避免空白或重複的搜尋請求
-
-### 🔍 強大的檔案搜尋
-- **高效率**：使用系統 `find` 命令實現高效能搜尋
-- **靈活匹配**：支援模糊比對和大小寫敏感選項
-- **超時機制**：搜尋操作自動在 10 秒後超時，避免過長的搜尋卡住系統
-
-### 🖥️ 精簡優雅的介面
-- **選單列圖示**：隨時待命的狀態列圖示
-- **搜尋結果視窗**：清晰的檔案列表，包含檔名和路徑資訊
-- **偏好設定**：可自定義搜尋行為與外觀
-
-### 🔐 安全存取
-- **沙盒兼容**：完全符合 macOS 應用程式沙盒安全規範
-- **安全存取**：正確處理安全性限定資源 (Security-Scoped Resources)
+## 🦅 Project Introduction
+**Hawk** is a macOS utility that allows users to quickly search for files in a specified local folder based on text in the clipboard. When you copy (Command+C) text in any application, Hawk can immediately find matching files in your designated folder and let you open them quickly.
 
 ---
 
-## 🚀 安裝與使用
+## ✨ Main Features
 
-### 系統需求
-- macOS 12 Monterey 或更高版本
-- 約 10MB 儲存空間
+### 📋 Clipboard Monitoring and Auto Search
+- **Auto Search**: Automatically search when clipboard content changes
+- **Manual Search**: Use shortcut key (⌘⇧F) or click the menu bar icon to search manually
+- **Smart Detection**: Avoid empty or duplicate search requests
 
-### 快速開始
-1. 下載 Hawk 應用程式並安裝到「應用程式」資料夾
-2. 啟動 Hawk 後，在選單列點擊 Hawk 圖示
-3. 設定您想要搜尋的資料夾
-4. 選擇是否啟用自動搜尋功能
-5. 開始使用！複製文字後，Hawk 將自動開始搜尋
+### 🔍 Powerful File Search
+- **High Efficiency**: Utilize system `find` command for high-performance searches
+- **Flexible Matching**: Support fuzzy matching and case sensitivity options
+- **Timeout Mechanism**: Search operations automatically time out after 10 seconds to prevent long searches from freezing the system
 
-### 常用快捷鍵
-- **⌘⇧F**：手動觸發搜尋
-- **⌘,**：開啟偏好設定
+### 🖥️ Clean and Elegant Interface
+- **Menu Bar Icon**: Always ready status bar icon
+- **Search Results Window**: Clear file list with filename and path information
+- **Preferences**: Customizable search behavior and appearance
 
----
-
-## 🛠️ 技術實現
-
-### 核心技術
-- **Swift** 與 **SwiftUI**：提供現代化的使用者界面
-- **剪貼簿監控**：使用 `NSPasteboard` 和計時器實現變更偵測
-- **檔案搜尋**：使用系統 `find` 命令實現高效搜尋
-- **搜尋超時控制**：使用 `DispatchWorkItem` 和 `asyncAfter` 實現 10 秒超時機制
-- **安全存取**：正確實作 Security-Scoped Bookmarks
-
-### 核心元件
-- **AccessibilityReader**：監控剪貼簿變化
-- **FileSearchManager**：處理檔案搜尋邏輯與超時控制
-- **StatusBarManager**：管理選單列圖示和搜尋結果視窗
-- **PreferencesManager**：處理使用者偏好設定
-- **HotkeyManager**：處理全局快捷鍵註冊與事件
+### 🔐 Secure Access
+- **Sandbox Compatible**: Fully compliant with macOS application sandbox security standards
+- **Secure Access**: Proper handling of security-scoped resources
 
 ---
 
-## 📝 未來計劃
-- [ ] 支援檔案內容搜尋
-- [ ] 關鍵字搜尋歷史紀錄
-- [ ] 整合 Spotlight 搜尋引擎
-- [ ] Alfred / Raycast 插件整合
-- [ ] iCloud 同步設定
-- [ ] 跨資料夾多區域搜尋
-- [ ] 自定義搜尋超時時間
+## 🚀 Installation and Usage
+
+### System Requirements
+- macOS 12 Monterey or higher
+- Approximately 10MB of storage space
+
+### Quick Start
+1. Download the Hawk application and install it in the "Applications" folder
+2. After launching Hawk, click the Hawk icon in the menu bar
+3. Set the folder you want to search
+4. Choose whether to enable automatic search
+5. Start using it! After copying text, Hawk will automatically begin searching
+
+### Common Shortcuts
+- **⌘⇧F**: Manually trigger search
+- **⌘,**: Open preferences
 
 ---
 
-## 🧑‍💻 貢獻與回饋
-歡迎提供回饋和建議以幫助改進 Hawk！如果您發現錯誤或有功能需求，請在 GitHub 上開啟 issue。
+## 🛠️ Technical Implementation
+
+### Core Technologies
+- **Swift** and **SwiftUI**: Provide a modern user interface
+- **Clipboard Monitoring**: Implement change detection using `NSPasteboard` and timers
+- **File Search**: Implement efficient search using the system `find` command
+- **Search Timeout Control**: Implement a 10-second timeout mechanism using `DispatchWorkItem` and `asyncAfter`
+- **Secure Access**: Properly implement Security-Scoped Bookmarks
+
+### Core Components
+- **AccessibilityReader**: Monitor clipboard changes
+- **FileSearchManager**: Handle file search logic and timeout control
+- **StatusBarManager**: Manage menu bar icon and search results window
+- **PreferencesManager**: Handle user preferences
+- **HotkeyManager**: Handle global hotkey registration and events
 
 ---
 
-## 📄 授權條款
-Hawk 使用 MIT 授權條款。
+## 📝 Future Plans
+- [ ] Support for file content search
+- [ ] Keyword search history
+- [ ] Integration with Spotlight search engine
+- [ ] Alfred / Raycast plugin integration
+- [ ] iCloud sync settings
+- [ ] Cross-folder multi-area search
+- [ ] Custom search timeout duration
 
 ---
 
-## 👏 致謝
-感謝所有提供意見和測試的用戶。
+## 🧑‍💻 Contributions and Feedback
+Feedback and suggestions to help improve Hawk are welcome! If you find bugs or have feature requests, please open an issue on GitHub.
+
+---
+
+## 📄 License
+Hawk is licensed under the MIT License.
+
+---
+
+## 👏 Acknowledgements
+Thanks to all users who provided feedback and testing.
 
