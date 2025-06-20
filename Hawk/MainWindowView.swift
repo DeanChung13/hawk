@@ -3,8 +3,18 @@ import Cocoa
 import SwiftUI
 
 struct MainWindowView: View {
-  @State private var searchDirectory: String = ""
+  enum SearchDirectory: Equatable {
+    case empty
+    case text(String)
+    case autoUpdate
+  }
+
+  @State private var searchDirectory: SearchDirectory
   @ObservedObject private var textObserver = SelectedTextObserver()
+    
+  init(searchDirectory: SearchDirectory = .autoUpdate) {
+    self.searchDirectory = searchDirectory
+  }
 
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
@@ -14,17 +24,16 @@ struct MainWindowView: View {
       Divider()
 
       // Show selected directory if available
-      if !searchDirectory.isEmpty {
         HStack {
           Text("Selected Directory:")
             .font(.headline)
-            .foregroundColor(.white)
           Button("Configure") {
             showDirectoryPicker()
           }
           .frame(maxWidth: .infinity, alignment: .leading)
         }
-        Text(searchDirectory)
+      if case .text(let result) = searchDirectory {
+        Text(result)
           .font(.body)
           .foregroundColor(.secondary)
       }
@@ -33,7 +42,6 @@ struct MainWindowView: View {
       if !textObserver.selectedText.isEmpty {
         Text("Clipboard Content:")
           .font(.headline)
-          .foregroundColor(.white)
         Text(textObserver.selectedText)
           .font(.body)
           .foregroundColor(.secondary)
@@ -49,7 +57,9 @@ struct MainWindowView: View {
     .padding()
     .frame(width: 320)
     .onAppear {
-      updateDirectoryPath()
+      if searchDirectory == .autoUpdate {
+        updateDirectoryPath()
+      }
       startObservingSelectedText()
     }
     .onDisappear {
@@ -73,9 +83,9 @@ struct MainWindowView: View {
     
   private func updateDirectoryPath() {
     if let directoryURL = PreferencesManager.shared.getSearchDirectory() {
-      searchDirectory = directoryURL.path
+      searchDirectory = .text(directoryURL.path)
     } else {
-      searchDirectory = ""
+      searchDirectory = .empty
     }
   }
     
@@ -130,6 +140,10 @@ class SelectedTextObserver: ObservableObject {
   }
 }
 
-#Preview {
-  MainWindowView()
+#Preview("Empty") {
+  MainWindowView(searchDirectory: .empty)
+}
+
+#Preview("Normal") {
+  MainWindowView(searchDirectory: .text("/Volumes/Temp"))
 }
